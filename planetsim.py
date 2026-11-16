@@ -41,6 +41,7 @@ time = 0.0
 sped_time_passed = 0.0
 
 camera_pos = [0, 0]
+camera_movement_speed = 3.5e3
 zoom = 1e-8
 
 initial_speed_mult = 1000
@@ -67,9 +68,12 @@ while RUNNING:
         if event.type == pg.MOUSEWHEEL:
             if event.y > 0:
                 zoom *= 1.2
+                print(zoom)
             if event.y < 0:
                 zoom /= 1.2
-    fps_text = font.render(str(round(time, 2)), True, pg.Color('white'))
+                print(zoom)
+    
+    fps_text = font.render(str(round(clock.get_fps(), 2)), True, pg.Color('white'))
     multiplier_text = font.render((str(round(dt_multiplier, 2)) + "x speed"), True, pg.Color('white'))
 
     dt = clock.tick(240) / 1000
@@ -102,21 +106,19 @@ while RUNNING:
     for b in bodies:
         b.update_position(sped_up_dt)
 
-
-
     keys = pg.key.get_pressed()
 
     if keys[pg.K_w]:
-        camera_pos[1] -= 1e12 * dt
+        camera_pos[1] -= camera_movement_speed * dt / zoom ** .92
 
     if keys[pg.K_s]:
-        camera_pos[1] += 1e12 * dt
+        camera_pos[1] += camera_movement_speed * dt / zoom ** .92
 
     if keys[pg.K_a]:
-        camera_pos[0] -= 1e12 * dt
+        camera_pos[0] -= camera_movement_speed * dt / zoom ** .92
 
     if keys[pg.K_d]:
-        camera_pos[0] += 1e12 * dt
+        camera_pos[0] += camera_movement_speed * dt / zoom ** .92
 
     line_surface = pg.Surface((WIDTH, HEIGHT), pg.SRCALPHA)
 
