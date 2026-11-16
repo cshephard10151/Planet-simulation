@@ -44,7 +44,7 @@ camera_movement_speed = 3.5e3
 initial_zoom = 2.5e-9
 zoom = initial_zoom
 
-initial_speed_mult = 1000
+initial_speed_mult = 1024
 dt_multiplier = initial_speed_mult
 
 camera_choice = 0
@@ -142,7 +142,7 @@ while RUNNING:
     for b in bodies:
         screen_pos = world_to_screen(b.position, camera_pos, zoom)
         screen_radius = max(2, int(b.radius * zoom))
-        radius = b.radius * zoom * 15
+        radius = b.radius * zoom * 25
         radius = max(radius, 1)
         pg.draw.circle(screen, pg.Color('white'), screen_pos, radius)
         if line_toggle:
