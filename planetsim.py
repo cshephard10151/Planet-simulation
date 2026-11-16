@@ -50,6 +50,8 @@ dt_multiplier = initial_speed_mult
 camera_choice = 0
 following_planet = False
 
+line_toggle = True
+
 RUNNING = True
 while RUNNING:
     for event in pg.event.get():
@@ -77,18 +79,18 @@ while RUNNING:
             if event.key == pg.K_f: #toggle following planets
                 following_planet = not following_planet
                 print(following_planet)
+            if event.key == pg.K_l:
+                line_toggle = not line_toggle
 
         if event.type == pg.MOUSEWHEEL:
             if event.y > 0:
                 zoom *= 1.2
             if event.y < 0:
                 zoom /= 1.2
-
-    if following_planet:
-        camera_pos = bodies[1 - camera_choice].position.copy()
     
     fps_text = font.render(str(round(clock.get_fps(), 2)), True, pg.Color('white'))
     multiplier_text = font.render((str(round(dt_multiplier, 2)) + "x speed"), True, pg.Color('white'))
+    following_text = font.render((f"Following: {bodies[camera_choice - 1].name}" if following_planet else "Following: None"), True, pg.Color('white'))
 
     dt = clock.tick(240) / 1000
     sped_up_dt = dt * dt_multiplier
@@ -118,6 +120,9 @@ while RUNNING:
     for b in bodies:
         b.update_position(sped_up_dt)
 
+    if following_planet:
+        camera_pos = bodies[1 - camera_choice].position.copy()
+
     if not following_planet:
         keys = pg.key.get_pressed()
         if keys[pg.K_w]:
@@ -140,15 +145,17 @@ while RUNNING:
         radius = b.radius * zoom * 15
         radius = max(radius, 1)
         pg.draw.circle(screen, pg.Color('white'), screen_pos, radius)
-        for other in forces_dict[b]:
-            rgb_val = max(0, min(255, int(forces_dict[b][other] / force_line_color)))
-            other_screen_pos = world_to_screen(other.position, camera_pos, zoom)
-            pg.draw.line(line_surface, (255 - rgb_val, rgb_val, 0, 64), (screen_pos), (other_screen_pos), 1)
+        if line_toggle:
+            for other in forces_dict[b]:
+                rgb_val = max(0, min(255, int(forces_dict[b][other] / force_line_color)))
+                other_screen_pos = world_to_screen(other.position, camera_pos, zoom)
+                pg.draw.line(line_surface, (255 - rgb_val, rgb_val, 0, 64), (screen_pos), (other_screen_pos), 1)
 
     screen.blit(line_surface, (0, 0))
-    screen.blit(fps_text, (50, 50))
-    screen.blit(multiplier_text, (50, 100))
-    screen.blit(time_passed_text, (50, 150))
+    screen.blit(fps_text, (50, 35))
+    screen.blit(multiplier_text, (50, 70))
+    screen.blit(time_passed_text, (50, 105))
+    screen.blit(following_text, (50, 140))
 
     pg.display.update()
 
