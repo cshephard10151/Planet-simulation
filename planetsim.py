@@ -19,15 +19,11 @@ bodies = []
 
 #earth = body('earth', (1e11 * i ** 1.3, -1e11 * i ** 2), 5.97e24, 6.371e6)
 #mars = body('mars', (2.25e11, 2.25e11), 6.42e23, 3.389e6)
-#jupiter = body('jupiter', (2.25e12, -2.25e11), 1.898e27, 6.9e7)
+#jupiter = body('jupiter', (2.25e12, -2.25e11), 1.898e27, 6.9e7) #need to add kwargs to these
 
-star = body('star', (0, 0), 2.0e30, 7.0e8)
-pA = body('planet A', (1.5e11, 0), 6.0e24, 6.0e6)
-pB = body('planet B', (0, 7.8e11), 1.9e24, 7.0e7)
-
-star.velocity = [0, 0]
-pA.velocity = [0, 29800]
-pB.velocity = [-13100, 0]
+star = body(name = 'star', coordinates = (0, 0), mass = 2.0e30, radius = 7.0e8, velocity = [0, 0])
+pA = body(name = 'planet A', coordinates = (1.5e11, 0), mass = 6.0e24, radius = 6.0e6, velocity = [0, 29800])
+pB = body(name = 'planet B', coordinates = (0, 7.8e11), mass = 1.9e24, radius = 7.0e7, velocity = [-13100, 0]) #do not need to use KWARGS, I just did it here for readability
 
 bodies.append(star)
 bodies.append(pA)

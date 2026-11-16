@@ -3,12 +3,12 @@ from math import sqrt, atan2, cos, sin, degrees
 G = 6.67e-11
 
 class body:
-    def __init__(self, name = 'planet X', coordinates = (0, 0), mass = 0, radius = 1):
+    def __init__(self, name = 'planet X', coordinates = (0, 0), mass = 0, radius = 1, velocity = [0, 0]):
         self.name = name
         self.position = [coordinates[0], coordinates[1]]
         self.mass = mass
         self.radius = radius
-        self.velocity = [0, 0]
+        self.velocity = velocity
 
     def calculate_dist(self, other):
         dist = sqrt((other.position[1] - self.position[1]) ** 2 + (other.position[0] - self.position[0]) ** 2)
